@@ -1,17 +1,20 @@
-import java.util.Scanner;
+import java.io.BufferedReader; 
+import java.io.IOException; 
+import java.io.InputStreamReader; 
+import java.util.StringTokenizer;
 
 /**
  * @author lyskevin
  */
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int k = sc.nextInt();
+        FastReader fr = new FastReader();
+        int n = fr.nextInt();
+        int k = fr.nextInt();
         UF uf = new UF(n);
         for (int i = 0; i < k; i++) {
-            int number1 = sc.nextInt() - 1;
-            int number2 = sc.nextInt() - 1;
+            int number1 = fr.nextInt() - 1;
+            int number2 = fr.nextInt() - 1;
             uf.union(number1, number2);
         }
         boolean canSort = true;
@@ -27,6 +30,67 @@ public class Main {
             System.out.println("No");
         }
     }
+}
+
+/**
+ * Fast I/O
+ * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
+ */
+class FastReader 
+{ 
+    BufferedReader br; 
+    StringTokenizer st; 
+
+    public FastReader() 
+    { 
+        br = new BufferedReader(new
+                InputStreamReader(System.in)); 
+    } 
+
+    String next() 
+    { 
+        while (st == null || !st.hasMoreElements()) 
+        { 
+            try
+            { 
+                st = new StringTokenizer(br.readLine()); 
+            } 
+            catch (IOException  e) 
+            { 
+                e.printStackTrace(); 
+            } 
+        } 
+        return st.nextToken(); 
+    } 
+
+    int nextInt() 
+    { 
+        return Integer.parseInt(next()); 
+    } 
+
+    long nextLong() 
+    { 
+        return Long.parseLong(next()); 
+    } 
+
+    double nextDouble() 
+    { 
+        return Double.parseDouble(next()); 
+    } 
+
+    String nextLine() 
+    { 
+        String str = ""; 
+        try
+        { 
+            str = br.readLine(); 
+        } 
+        catch (IOException e) 
+        { 
+            e.printStackTrace(); 
+        } 
+        return str; 
+    } 
 }
 
 /* Union-Find helper class by Kevin Wayne and Robert Sedgewick */
