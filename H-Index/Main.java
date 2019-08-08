@@ -32,5 +32,3 @@ public class Main {
     }
 }
 
-// 999 999 999 999
-
