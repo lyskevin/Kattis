@@ -43,14 +43,6 @@ public class Main {
     }
 }
 
-/*
-
-    F: 0 2
-
-    B: 1
-
-*/
-
 /**
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
