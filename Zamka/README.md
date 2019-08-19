@@ -1,6 +1,6 @@
 # Link
 
-https://open.kattis.com/problems/problemclassification
+https://open.kattis.com/problems/zamka
 
 ## Personal Thoughts
 
