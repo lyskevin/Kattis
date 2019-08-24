@@ -1,8 +1,9 @@
-import java.io.BufferedReader; 
+import java.io.BufferedReader;
+import java.io.BufferedOutputStream;
 import java.io.IOException; 
-import java.io.InputStreamReader; 
-import java.util.StringTokenizer;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
 
 /**
  * Fast I/O
@@ -11,12 +12,13 @@ import java.io.PrintWriter;
 class FastIO extends PrintWriter 
 { 
     BufferedReader br; 
-    StringTokenizer st; 
+    StringTokenizer st;
 
-    public FastReader() 
+    public FastIO() 
     { 
+        super(new BufferedOutputStream(System.out)); 
         br = new BufferedReader(new
-                InputStreamReader(System.in)); 
+                InputStreamReader(System.in));
     } 
 
     String next() 
