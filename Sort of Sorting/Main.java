@@ -3,13 +3,12 @@ import java.io.IOException;
 import java.io.InputStreamReader; 
 import java.util.StringTokenizer;
 import java.lang.StringBuilder;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * @author lyskevin
  */
 public class Main {
-
     public static void main(String[] args) {
         FastReader fr = new FastReader();
         int numberOfNames = fr.nextInt();
@@ -19,7 +18,13 @@ public class Main {
             for (int i = 0; i < numberOfNames; i++) {
                 names[i] = fr.nextLine();
             }
-            mergeSort(names);
+            Comparator<String> nameComparator = new Comparator<>() {
+                @Override
+                public int compare(String name1, String name2) {
+                    return name1.substring(0, 2).compareTo(name2.substring(0, 2));
+                }
+            };
+            Arrays.sort(names, nameComparator);
             for (int i = 0; i < numberOfNames; i++) {
                 output.append(names[i]);
                 output.append("\n");
@@ -31,55 +36,6 @@ public class Main {
         }
         System.out.print(output);
     }
-
-    private static void mergeSort(String[] names) {
-        if (names.length > 1) {
-            String[] leftHalf = new String[names.length / 2];
-            String[] rightHalf = new String[names.length - (names.length / 2)];
-            System.arraycopy(names, 0, leftHalf, 0, names.length / 2);
-            System.arraycopy(names, names.length / 2, rightHalf, 0,
-                    names.length - (names.length / 2));
-            mergeSort(leftHalf);
-            mergeSort(rightHalf);
-            int leftIndex = 0;
-            int rightIndex = 0;
-            int nameIndex = 0;
-            while (leftIndex < leftHalf.length && rightIndex < rightHalf.length) {
-                String name1 = leftHalf[leftIndex];
-                String name2 = rightHalf[rightIndex];
-                int nameComparison = compare(name1, name2);
-                if (nameComparison <= 0) {
-                    names[nameIndex] = name1;
-                    leftIndex++;
-                } else {
-                    names[nameIndex] = name2;
-                    rightIndex++;
-                }
-                nameIndex++;
-            }
-            while (leftIndex < leftHalf.length) {
-                names[nameIndex] = leftHalf[leftIndex];
-                leftIndex++;
-                nameIndex++;
-            }
-            while (rightIndex < rightHalf.length) {
-                names[nameIndex] = rightHalf[rightIndex];
-                rightIndex++;
-                nameIndex++;
-            }
-        }
-    }
-
-    private static int compare(String name1, String name2) {
-        if (name1.charAt(0) != name2.charAt(0)) {
-            return name1.charAt(0) - name2.charAt(0);
-        } else if (name1.charAt(1) != name2.charAt(1)) {
-            return name1.charAt(1) - name2.charAt(1);
-        } else {
-            return 0;
-        }
-    }
-
 }
 
 /**
