@@ -1,6 +1,6 @@
 # Link
 
-https://open.kattis.com/problems/cd
+https://open.kattis.com/problems/birds
 
 ## Personal Thoughts
 
