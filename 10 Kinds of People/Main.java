@@ -1,9 +1,5 @@
-import java.io.BufferedReader; 
-import java.io.IOException; 
-import java.io.InputStreamReader; 
-import java.util.StringTokenizer;
-import java.util.Queue;
-import java.util.LinkedList;
+import java.io.*;
+import java.util.*;
 
 /**
  * @author lyskevin
@@ -12,12 +8,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        FastReader fr = new FastReader();
-        int numberOfRows = fr.nextInt();
-        int numberOfColumns = fr.nextInt();
+        FastIO fio = new FastIO();
+        int numberOfRows = fio.nextInt();
+        int numberOfColumns = fio.nextInt();
         boolean[][] map = new boolean[numberOfRows][numberOfColumns];
         for (int i = 0; i < numberOfRows; i++) {
-            String row = fr.next();
+            String row = fio.next();
             for (int j = 0, n = row.length(); j < n; j++) {
                 if (row.charAt(j) == '1') {
                     map[i][j] = true;
@@ -38,23 +34,25 @@ public class Main {
             }
         }
 
-        int numberOfQueries = fr.nextInt();
+        int numberOfQueries = fio.nextInt();
         for (int i = 0; i < numberOfQueries; i++) {
-            int row1 = fr.nextInt() - 1;
-            int column1 = fr.nextInt() - 1;
-            int row2 = fr.nextInt() - 1;
-            int column2 = fr.nextInt() - 1;
+            int row1 = fio.nextInt() - 1;
+            int column1 = fio.nextInt() - 1;
+            int row2 = fio.nextInt() - 1;
+            int column2 = fio.nextInt() - 1;
             if (connections.connected(xyTo1D(row1, column1, numberOfColumns),
                         xyTo1D(row2, column2, numberOfColumns))) {
                 if (!map[row1][column1]) {
-                    System.out.println("binary");
+                   fio.println("binary");
                 } else {
-                    System.out.println("decimal");
+                    fio.println("decimal");
                 }
             } else {
-                System.out.println("neither");
+                fio.println("neither");
             }
         }
+
+        fio.close();
 
     }
 
@@ -110,15 +108,16 @@ public class Main {
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
  */
-class FastReader 
+class FastIO extends PrintWriter 
 { 
     BufferedReader br; 
-    StringTokenizer st; 
+    StringTokenizer st;
 
-    public FastReader() 
+    public FastIO() 
     { 
+        super(new BufferedOutputStream(System.out)); 
         br = new BufferedReader(new
-                InputStreamReader(System.in)); 
+                InputStreamReader(System.in));
     } 
 
     String next() 
