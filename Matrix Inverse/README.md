@@ -1,6 +1,6 @@
 # Link
 
-https://open.kattis.com/problems/blockcrusher
+https://open.kattis.com/problems/matrix
 
 ## Personal Thoughts
 
