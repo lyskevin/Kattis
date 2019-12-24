@@ -20,6 +20,7 @@ public class Main {
                 int n = fio.nextInt();
                 int k = fio.nextInt();
                 int[] primeFactors = new int[432];
+                // Calculate prime factors (and their frequencies) of n
                 for (int i = 1; i <= n; i++) {
                     int index = 0;
                     int primeFactor = primes.get(index);
@@ -36,6 +37,8 @@ public class Main {
                         primeFactors[copy] += 1;
                     }
                 }
+                // Calculate prime factors (and their frequencies) of k
+                // These are subtracted from n's prime factor frequencies
                 for (int i = 1; i <= k; i++) {
                     int index = 0;
                     int primeFactor = primes.get(index);
@@ -52,6 +55,8 @@ public class Main {
                         primeFactors[copy] -= 1;
                     }
                 }
+                // Calculate prime factors (and their frequencies) of (n - k)
+                // These are subtracted from n's prime factor frequencies
                 for (int i = 1; i <= n - k; i++) {
                     int index = 0;
                     int primeFactor = primes.get(index);
@@ -69,6 +74,7 @@ public class Main {
                     }
                 }
                 long count = 1;
+                // Use the resulting prime factor frequencies to calculate the number of divisors
                 for (int i = 2; i <= 431; i++) {
                     if (primeFactors[i] > 0) {
                         count *= primeFactors[i] + 1;
