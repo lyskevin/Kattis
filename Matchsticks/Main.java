@@ -22,9 +22,11 @@ public class Main {
     }
 
     private static void generateNumbers(int n, StringBuilder s) {
+        // n > 100 is an invalid value
         if (n > 100) {
             return;
         } else if (n == 0) {
+            // Start from 1 to avoid leading 0s
             for (int i = 1; i <= 9; i++) {
                 s.append(i);
                 generateNumbers(n + digits[i], s);
@@ -32,13 +34,17 @@ public class Main {
             }
         } else {
             StringNumber sn = new StringNumber(s.toString());
+            // Number is between minimum and maximum for this value of n
+            // In this case, we do not want to proceed with any further computations
             if (minimums[n] != null && sn.compareTo(minimums[n]) > 0
                     && maximums[n] != null && sn.compareTo(maximums[n]) < 0) {
                 return;
             }
+            // New minimum found
             if (minimums[n] == null || sn.compareTo(minimums[n]) <= 0) {
                 minimums[n] = sn;
             }
+            // New maximum found
             if (maximums[n] == null || sn.compareTo(maximums[n]) >= 0) {
                 maximums[n] = sn;
             }
