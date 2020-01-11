@@ -13,6 +13,7 @@ public class Main {
         int secondStarDifference = timeToMinutes(fio.nextLine());
         boolean[] firstStarFlashes = new boolean[10000000];
         int index = firstStarFlash;
+        // Record first star's flash timings
         while (index < 10000000) {
             firstStarFlashes[index] = true;
             index += firstStarDifference;
@@ -20,6 +21,7 @@ public class Main {
         index = secondStarFlash;
         boolean sameTimeFound = false;
         int sameFlashTime = 0;
+        // Check if any of the second star's flash timings coincide with those of the first star
         while (index < 10000000 && !sameTimeFound) {
             if (firstStarFlashes[index]) {
                 sameTimeFound = true;
@@ -27,6 +29,7 @@ public class Main {
             }
             index += secondStarDifference;
         }
+        // Print flash time if one is found
         if (sameTimeFound) {
             int day = sameFlashTime / 1440 % 7;
             switch (day) {
