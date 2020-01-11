@@ -26,10 +26,10 @@ public class Main {
         }
         int index = 0;
         int song = firstList[index];
-        // Jump to the song whose maximum rank matches its index in the input list
-        // This works since we store the maximum rank among all input lists
-        // We stop when we reach the first such song since we want the smallest such set of songs
-        while (songRanks[song] != index) {
+        // Jump to the song whose maximum rank is less than or equal to its index in the input list.
+        // We cannot use a song whose maximum rank is greater than its index in the first input list
+        // since another singer has a higher rank for that song, so some songs will not be accounted for.
+        while (songRanks[song] > index) {
             index = songRanks[song];
             song = firstList[index];
         }
