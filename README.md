@@ -4,5 +4,5 @@ Solution code for Kattis problems that I've solved. The coding style may not be 
 
 ## 23/12/2019 Update
 
-I have decided to leave some comments in my source code from now on for future reference.
+I have decided to leave some explanatory comments in my source code from now on for future reference.
 
