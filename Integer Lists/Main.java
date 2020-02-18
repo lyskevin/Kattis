@@ -1,63 +1,70 @@
+import java.io.*;
 import java.util.*;
-import java.io.BufferedReader; 
-import java.io.IOException; 
-import java.io.InputStreamReader;
-import java.lang.StringBuilder;
 
 /**
  * @author lyskevin
  */
 public class Main {
     public static void main(String[] args) {
-        FastReader fr = new FastReader();
-        int numberOfTestCases = fr.nextInt();
-        for (int i = 0; i < numberOfTestCases; i++) {
-            String commands = fr.next();
-            int listSize = fr.nextInt();
-            String list = fr.next();
+        FastIO fio = new FastIO();
+        int n = fio.nextInt();
+        for (int i = 0; i < n; i++) {
+            String commands = fio.nextLine();
+            int p = fio.nextInt();
+            String list = fio.nextLine();
             String[] integers = list.substring(1, list.length() - 1).split(",");
-            int listHead = 0;
-            int listTail = listSize - 1;
-            boolean isReversed = false;
-            boolean isError = false;
-            for (int j = 0; j < commands.length(); j++) {
-                if (commands.charAt(j) == 'R') {
-                    isReversed = !isReversed;
+            // Add integers to deque
+            Deque<Integer> deque = new ArrayDeque<>();
+            for (int j = 0; j < integers.length; j++) {
+                if (!integers[j].equals("")) {
+                    deque.addLast(Integer.parseInt(integers[j]));
+                }
+            }
+            // Perform operations
+            boolean isReverse = false;
+            boolean hasError = false;
+            for (int j = 0; j < commands.length() && !hasError; j++) {
+                char command = commands.charAt(j);
+                if (command == 'R') {
+                    isReverse = !isReverse;
                 } else {
-                    if (listTail < listHead) {
-                        isError = true;
-                        break;
-                    } else if (isReversed) {
-                        listTail--;
+                    if (deque.isEmpty()) {
+                        hasError = true;
+                    } else if (!isReverse) {
+                        deque.removeFirst();
                     } else {
-                        listHead++;
+                        deque.removeLast();
                     }
                 }
             }
-            if (isError) {
-                System.out.println("error");
+            // Format and print output
+            if (hasError) {
+                fio.println("error");
             } else {
-                StringBuilder output = new StringBuilder('[');
-                System.out.print("[");
-                if (isReversed) {
-                    for (int k = listTail; k >= listHead; k--) {
-                        if (k < listTail) {
-                            output.append(',');
+                fio.print("[");
+                if (isReverse) {
+                    Stack<Integer> stack = new Stack<>();
+                    for (int j = 0, k = deque.size(); j < k; j++) {
+                        stack.push(deque.removeFirst());
+                    }
+                    for (int j = 0, k = stack.size(); j < k; j++) {
+                        if (j > 0) {
+                            fio.print(",");
                         }
-                        output.append(integers[k]);
-                    } 
+                        fio.print(stack.pop());
+                    }
                 } else {
-                    for (int k = listHead; k <= listTail; k++) {
-                        if (k > listHead) {
-                            output.append(',');
+                    for (int j = 0, k = deque.size(); j < k; j++) {
+                        if (j > 0) {
+                            fio.print(",");
                         }
-                        output.append(integers[k]);
-                    } 
+                        fio.print(deque.removeFirst());
+                    }
                 }
-                output.append(']');
-                System.out.println(output);
+                fio.println("]");
             }
         }
+        fio.close();
     }
 }
 
@@ -65,15 +72,16 @@ public class Main {
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
  */
-class FastReader 
+class FastIO extends PrintWriter 
 { 
     BufferedReader br; 
-    StringTokenizer st; 
+    StringTokenizer st;
 
-    public FastReader() 
+    public FastIO() 
     { 
+        super(new BufferedOutputStream(System.out)); 
         br = new BufferedReader(new
-                InputStreamReader(System.in)); 
+                InputStreamReader(System.in));
     } 
 
     String next() 
