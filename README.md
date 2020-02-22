@@ -6,3 +6,9 @@ Solution code for Kattis problems that I've solved. The coding style may not be 
 
 I have decided to leave some explanatory comments in my source code from now on for future reference.
 
+## References
+
+Competitive Programming 3.18b by Prof Steven Halim.
+
+Accompanying website at https://cpbook.net/methodstosolve to sort problems by topic. This helps me to identify problems that I am able to do or find new topics which I want to learn.
+
