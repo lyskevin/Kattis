@@ -1,0 +1,15 @@
+{
+  "guiSettings" : {
+    "windowWidth" : 1400.0,
+    "windowHeight" : 800.0,
+    "windowCoordinates" : {
+      "x" : 37,
+      "y" : 23
+    }
+  },
+  "exerciseBookFilePath" : "data/exercisebook.json",
+  "propertyBookFilePath" : "data/propertybook.json",
+  "exerciseDatabaseFilePath" : "data/exercisedatabase.json",
+  "regimeBookFilePath" : "data/regimebook.json",
+  "scheduleBookFilePath" : "data/schedulebook.json"
+}

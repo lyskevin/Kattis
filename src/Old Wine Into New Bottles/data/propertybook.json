@@ -1,0 +1,15 @@
+{
+  "customProperties" : [ {
+    "prefixName" : "a",
+    "fullName" : "Intensity",
+    "parameterType" : "Number"
+  }, {
+    "prefixName" : "r",
+    "fullName" : "Rating",
+    "parameterType" : "Number"
+  }, {
+    "prefixName" : "e",
+    "fullName" : "Time",
+    "parameterType" : "Date"
+  } ]
+}

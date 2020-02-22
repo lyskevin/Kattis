@@ -1,0 +1,101 @@
+{
+  "jsonResources" : [ {
+    "regime" : {
+      "name" : "Level 1",
+      "exercises" : [ {
+        "name" : "Bench Press",
+        "date" : "17/11/2019",
+        "calories" : "222",
+        "quantity" : "30",
+        "unit" : "counts",
+        "muscles" : [ "Triceps" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Rope Skipping",
+        "date" : "17/11/2019",
+        "calories" : "330",
+        "quantity" : "10",
+        "unit" : "counts",
+        "muscles" : [ "Legs" ],
+        "customProperties" : { }
+      } ]
+    },
+    "date" : "17/11/2019"
+  }, {
+    "regime" : {
+      "name" : "Level 2",
+      "exercises" : [ {
+        "name" : "Bench Press",
+        "date" : "20/11/2019",
+        "calories" : "222",
+        "quantity" : "30",
+        "unit" : "counts",
+        "muscles" : [ "Triceps" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Running",
+        "date" : "20/11/2019",
+        "calories" : "127",
+        "quantity" : "2.4",
+        "unit" : "km",
+        "muscles" : [ "Legs" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Swimming",
+        "date" : "20/11/2019",
+        "calories" : "354",
+        "quantity" : "10",
+        "unit" : "laps",
+        "muscles" : [ "Calves" ],
+        "customProperties" : { }
+      } ]
+    },
+    "date" : "20/11/2019"
+  }, {
+    "regime" : {
+      "name" : "Level 3",
+      "exercises" : [ {
+        "name" : "Bench Press",
+        "date" : "22/11/2019",
+        "calories" : "122",
+        "quantity" : "30",
+        "unit" : "counts",
+        "muscles" : [ "Triceps" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Cycling",
+        "date" : "22/11/2019",
+        "calories" : "184",
+        "quantity" : "5",
+        "unit" : "km",
+        "muscles" : [ "Legs" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Rope Skipping",
+        "date" : "22/11/2019",
+        "calories" : "230",
+        "quantity" : "10",
+        "unit" : "counts",
+        "muscles" : [ "Legs" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Strength Training",
+        "date" : "22/11/2019",
+        "calories" : "241",
+        "quantity" : "20",
+        "unit" : "counts",
+        "muscles" : [ "Chest" ],
+        "customProperties" : { }
+      }, {
+        "name" : "Swimming",
+        "date" : "22/11/2019",
+        "calories" : "254",
+        "quantity" : "10",
+        "unit" : "laps",
+        "muscles" : [ "Calves" ],
+        "customProperties" : { }
+      } ]
+    },
+    "date" : "22/11/2019"
+  } ]
+}
