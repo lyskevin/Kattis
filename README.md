@@ -10,5 +10,5 @@ I have decided to leave some explanatory comments in my source code from now on 
 
 Competitive Programming 3.18b by Prof Steven Halim.
 
-I use the accompanying website at https://cpbook.net/methodstosolve to sort problems by topic. This helps me to identify doable problems and identify new topics to learn.
+I use the accompanying website at https://cpbook.net/methodstosolve to sort problems by topic. This helps me to identify doable problems as well as new topics to learn.
 
