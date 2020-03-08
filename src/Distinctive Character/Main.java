@@ -18,15 +18,18 @@ public class Main {
             visited[character] = true;
         }
         int result = 0;
+        // Generate bitmasks for flipping digits
         ArrayList<Integer> bitMasks = new ArrayList<>();
         for (int i = 1, bitMask = 0x1; i <= k; i++) {
             bitMasks.add(bitMask);
             bitMask = bitMask << 1;
         }
+        // Run BFS
         while (!bfsQueue.isEmpty()) {
             int character = bfsQueue.poll();
             result = character;
             for (int i = 0; i < k; i++) {
+                // XOR with stored bitmask to flip one digit
                 int newCharacter = character ^ bitMasks.get(i);
                 if (!visited[newCharacter]) {
                     visited[newCharacter] = true;
