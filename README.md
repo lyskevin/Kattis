@@ -1,6 +1,6 @@
 # Kattis Programs
 
-Solution code for Kattis problems that I've solved. The coding style may not be the best since I will be focusing on coming up with solutions that are fast enough to pass all of Kattis' test cases for any given problem.
+Solution code for Kattis problems that I've solved. The coding style may not be the best since I will be focusing on coming up with solutions that are fast enough to pass all of Kattis' test cases for any given problem. This repository has temporarily been made private to prevent students from plagiarising solutions.
 
 ## 23/12/2019 Update
 
