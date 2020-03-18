@@ -9,9 +9,11 @@ public class Main {
         FastIO fio = new FastIO();
         int n = fio.nextInt();
         int m = fio.nextInt();
-        HashMap<Integer, HashSet<Tuple>> adjList = new HashMap<>();
+
+        // Initialise adjacency list
+        ArrayList<ArrayList<Tuple>> adjList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            adjList.put(i, new HashSet<>());
+            adjList.add(new ArrayList<>());
         }
         for (int i = 0; i < m; i++) {
             int a = fio.nextInt();
@@ -20,68 +22,91 @@ public class Main {
             adjList.get(a).add(new Tuple(b, d));
             adjList.get(b).add(new Tuple(a, d));
         }
-        int[] predecessors = new int[n];
-        long[] distances = new long[n];
-        for (int i = 0; i < n; i++) {
-            predecessors[i] = -1;
-            distances[i] = 1000000000000000000l;
-        }
+
+        // Run Dijkstra's algorithm from Amsterdam
         PriorityQueue<Tuple> pq = new PriorityQueue<>();
-        distances[1] = 0l;
+        long[] distances = new long[n];
+        int[] predecessors = new int[n];
         pq.add(new Tuple(1, 0l));
+        for (int i = 0; i < n; i++) {
+            distances[i] = 1000000000000000000l;
+            predecessors[i] = -1;
+        }
+        distances[1] = 0l;
         while (!pq.isEmpty()) {
             Tuple u = pq.poll();
-            if (u.distance > distances[u.location]) {
-                continue;
-            }
-            for (Tuple v : adjList.get(u.location)) {
-                if (distances[v.location] > distances[u.location] + v.distance) {
-                    distances[v.location] = distances[u.location] + v.distance;
-                    predecessors[v.location] = u.location;
-                    pq.add(new Tuple(v.location, distances[v.location]));
+            if (distances[u.location] == u.distance) {
+                for (Tuple v : adjList.get(u.location)) {
+                    if (distances[v.location] > distances[u.location] + v.distance) {
+                        distances[v.location] = distances[u.location] + v.distance;
+                        predecessors[v.location] = u.location;
+                        pq.add(new Tuple(v.location, distances[v.location]));
+                    }
                 }
             }
         }
-        int location = 0;
-        while (predecessors[location] != -1) {
-            adjList.get(location).remove(new Tuple(predecessors[location], 0l));
-            location = predecessors[location];
+
+        // Generate and store banned edges from all vertices
+        HashMap<Integer, HashSet<Integer>> bannedEdges = new HashMap<>();
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                int location = i;
+                visited[location] = true;
+                while (predecessors[location] != -1) {
+                    if (!bannedEdges.containsKey(location)) {
+                        bannedEdges.put(location, new HashSet<>());
+                    }
+                    bannedEdges.get(location).add(predecessors[location]);
+                    location = predecessors[location];
+                    visited[location] = true;
+                }
+            }
         }
+
+        // Run BFS from Delft while excluding banned edges from use
+        Queue<Integer> bfsQueue = new LinkedList<>();
+        visited = new boolean[n];
         predecessors = new int[n];
         for (int i = 0; i < n; i++) {
             predecessors[i] = -1;
         }
-        boolean[] visited = new boolean[n];
-        Queue<Integer> bfsQueue = new LinkedList<>();
+        bfsQueue.offer(0);
         visited[0] = true;
-        bfsQueue.add(0);
         while (!bfsQueue.isEmpty()) {
             Integer u = bfsQueue.poll();
             for (Tuple v : adjList.get(u)) {
-                if (!visited[v.location]) {
+                if (bannedEdges.containsKey(u) && bannedEdges.get(u).contains(v.location)) {
+                    continue;
+                } else if (!visited[v.location]) {
                     visited[v.location] = true;
+                    bfsQueue.offer(v.location);
                     predecessors[v.location] = u;
-                    bfsQueue.add(v.location);
                 }
             }
         }
-        if (!visited[1]) {
-            fio.println("impossible");
-        } else {
-            ArrayList<Integer> shortestPathReverse = new ArrayList<>();
-            shortestPathReverse.add(1);
-            location = 1;
-            while (predecessors[location] != -1) {
-                location = predecessors[location];
-                shortestPathReverse.add(location);
-            }
-            fio.print(shortestPathReverse.size());
-            for (int i = shortestPathReverse.size() - 1; i >= 0; i--) {
-                fio.print(" " + shortestPathReverse.get(i));
+
+        // Reconstruct predecessor path from Delft to Amsterdam which excludes the banned edges
+        ArrayList<Integer> reversePath = new ArrayList<>();
+        int location = 1;
+        reversePath.add(1);
+        while (predecessors[location] != -1) {
+            location = predecessors[location];
+            reversePath.add(location);
+        }
+
+        // Print path details if possible
+        if (visited[1]) {
+            fio.print(reversePath.size());
+            for (int i = reversePath.size() - 1; i >= 0; i--) {
+                fio.print(" " + reversePath.get(i));
             }
             fio.println();
+        } else {
+            fio.println("impossible");
         }
         fio.close();
+
     }
 }
 
@@ -98,22 +123,6 @@ class Tuple implements Comparable<Tuple> {
     @Override
         public int compareTo(Tuple other) {
             return Long.compare(this.distance, other.distance);
-        }
-
-    @Override
-        public boolean equals(Object other) {
-            if (this == other) {
-                return true;
-            } else if (!(other instanceof Tuple)) {
-                return false;
-            } else {
-                return this.location == ((Tuple) other).location;
-            }
-        }
-
-    @Override
-        public int hashCode() {
-            return Objects.hash(location);
         }
 
 }
