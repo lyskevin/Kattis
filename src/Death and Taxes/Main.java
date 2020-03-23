@@ -18,7 +18,7 @@ public class Main {
                     double y = fio.nextDouble();
                     averageCost = (numberOfShares * averageCost + x * y) / (numberOfShares + x);
                     numberOfShares += x;
-                } else if (event.equals("sell")) {
+                } else if (event.equals("sell")) { // Profit is irrelevant here
                     int x = fio.nextInt();
                     double y = fio.nextDouble();
                     numberOfShares -= x;
@@ -26,13 +26,18 @@ public class Main {
                     int x = fio.nextInt();
                     numberOfShares *= x;
                     averageCost /= x;
-                } else if (event.equals("merge")) {
+                } else if (event.equals("merge")) { // Profit is irrelevant here
                     int x = fio.nextInt();
                     averageCost *= x;
                     numberOfShares /= x;
                 } else {
                     double y = fio.nextDouble();
-                    profit = numberOfShares * (y - averageCost * 0.3); 
+                    double profitPerShare = y - averageCost;
+                    if (profitPerShare > 0) {
+                        profit = numberOfShares * (y - profitPerShare * 0.3); // Tax applies if profitPerShare > 0
+                    } else {
+                        profit = numberOfShares * y;
+                    }
                 }
             } catch (NullPointerException e) {
                 break;
