@@ -1,46 +1,47 @@
-import java.io.BufferedReader; 
-import java.io.IOException; 
-import java.io.InputStreamReader; 
-import java.util.StringTokenizer;
-import java.lang.StringBuilder;
+import java.io.*;
+import java.util.*;
 
 /**
  * @author lyskevin
  */
 public class Main {
     public static void main(String[] args) {
-        FastReader fr = new FastReader();
-        int numberOfVertices = fr.nextInt();
+        FastIO fio = new FastIO();
+        int numberOfVertices = fio.nextInt();
         while (numberOfVertices > 0) {
+            // Initialise adjacency matrix
             int[][] graph = new int[numberOfVertices][numberOfVertices];
             for (int i = 0; i < numberOfVertices; i++) {
                 for (int j = 0; j < numberOfVertices; j++) {
-                    graph[i][j] = fr.nextInt();
+                    graph[i][j] = fio.nextInt();
                 }
             }
-            StringBuilder output = new StringBuilder();
+            boolean isFirstOutput = true;
             for (int i = 0; i < numberOfVertices; i++) {
                 boolean isWeakVertex = true;
                 for (int j = 0; j < numberOfVertices && isWeakVertex; j++) {
                     if (graph[i][j] == 1) {
                         for (int k = 0; k < numberOfVertices && isWeakVertex; k++) {
                             if (graph[j][k] == 1 && graph[i][k] == 1
-                                && i != k && j != k) {
+                                && i != k && j != k) { // Not weak if triangle formed by 3 distinct vertices
                                 isWeakVertex = false;
                             }
                         }
                     }
                 }
                 if (isWeakVertex) {
-                    if (output.length() > 0) {
-                        output.append(" ");
+                    if (isFirstOutput) {
+                        isFirstOutput = false;
+                    } else {
+                        fio.print(" ");
                     }
-                    output.append(i);
+                    fio.print(i);
                 }
             }
-            System.out.println(output);
-            numberOfVertices = fr.nextInt();
+            fio.println();
+            numberOfVertices = fio.nextInt();
         }
+        fio.close();
     }
 }
 
@@ -48,15 +49,16 @@ public class Main {
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
  */
-class FastReader 
+class FastIO extends PrintWriter 
 { 
     BufferedReader br; 
-    StringTokenizer st; 
+    StringTokenizer st;
 
-    public FastReader() 
+    public FastIO() 
     { 
+        super(new BufferedOutputStream(System.out)); 
         br = new BufferedReader(new
-                InputStreamReader(System.in)); 
+                InputStreamReader(System.in));
     } 
 
     String next() 
@@ -104,5 +106,4 @@ class FastReader
         return str; 
     } 
 }
-
 

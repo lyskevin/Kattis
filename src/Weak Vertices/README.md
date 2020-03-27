@@ -6,3 +6,5 @@ https://open.kattis.com/problems/weakvertices
 
 Problem that I attempted while preparing to become a Teaching Assistant (TA) for NUS' CS2040 (Data Structures and Algorithms) course in Semester 1 of AY19/20. A brute force algorithm will suffice for this problem.
 
+Updated solution code on 27/03/2020
+
