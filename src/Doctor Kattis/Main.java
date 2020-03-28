@@ -13,20 +13,20 @@ public class Main {
         int count = 0;
         for (int i = 0; i < n; i++) {
             int query = fio.nextInt();
-            if (i == 0) {
+            if (query == 0) {
                 String name = fio.next();
                 int infectionLevel = fio.nextInt();
                 cats.add(new Cat(name, infectionLevel, count));
                 infectionLevels.put(name, new Pair(infectionLevel, count));
                 count++;
-            } else if (i == 1) {
+            } else if (query == 1) {
                 String name = fio.next();
                 int increase = fio.nextInt();
                 Pair data = infectionLevels.get(name);
                 cats.remove(new Cat(name, data.a, data.b));
                 infectionLevels.put(name, new Pair(data.a + increase, data.b));
                 cats.add(new Cat(name, data.a + increase, data.b));
-            } else if (i == 2) {
+            } else if (query == 2) {
                 String name = fio.next();
                 Pair data = infectionLevels.get(name);
                 cats.remove(new Cat(name, data.a, data.b));
@@ -71,7 +71,7 @@ class Cat implements Comparable<Cat> {
         if (this.infectionLevel != other.infectionLevel) {
             return this.infectionLevel - other.infectionLevel;
         }
-        return this.arrivalTime - other.arrivalTime;
+        return other.arrivalTime - this.arrivalTime;
     }
 
     @Override
