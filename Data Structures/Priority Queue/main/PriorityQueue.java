@@ -1,15 +1,8 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 /**
  * @author lyskevin
  * Mutable priority queue class which supports the update key operation.
  */
-public class PriorityQueue<E> {
+class PriorityQueue<E> {
 
     private static final String OFFER_INCOMPARABLE_ELEMENT_MESSAGE = "%s cannot "
             + "be cast to class java.lang.Comparable";
@@ -212,7 +205,8 @@ public class PriorityQueue<E> {
         element1Indices.add(index2);
         HashSet<Integer> element2Indices = elementMappings.get(element2);
         element2Indices.remove(index2);
-        element1Indices.add(index1);
+        element2Indices.add(index1);
     }
 
 }
+
