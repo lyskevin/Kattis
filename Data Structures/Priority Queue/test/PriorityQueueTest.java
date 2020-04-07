@@ -1,4 +1,7 @@
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Comparator;
 
 import org.junit.Test;
 
@@ -30,20 +33,20 @@ public class PriorityQueueTest {
     @Test
     public void offer_elementWithNoOrdering_throwsClassCastException() {
         PriorityQueue<Object> pq = new PriorityQueue<>();
-        assertEquals(new ClassCastException(), pq.offer(new Object()));
+        assertThrows(ClassCastException.class, () -> pq.offer(new Object()));
     }
 
     @Test
     public void offer_null_throwsNullPointerException() {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        assertEquals(new NullPointerException(PriorityQueue.OFFER_NULL_MESSAGE), pq.offer(null));
+        assertThrows(NullPointerException.class, () -> pq.offer(null));
     }
 
     @Test
     public void peek_nonEmptyPriorityQueue_returnsHeadElement() {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        pq.offer(1);
         pq.offer(2);
+        pq.offer(1);
         assertEquals(Integer.valueOf(1), pq.peek());
     }
 
@@ -67,6 +70,31 @@ public class PriorityQueueTest {
     public void poll_emptyPriorityQueue_returnsNull() {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         assertEquals(null, pq.poll());
+    }
+
+    @Test
+    public void poll_sequenceOfElements_returnsCorrectOrdering() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.offer(3);
+        pq.offer(1);
+        pq.offer(2);
+        assertEquals(Integer.valueOf(1), pq.poll());
+        pq.offer(0);
+        pq.offer(4);
+        assertEquals(Integer.valueOf(0), pq.poll());
+    }
+
+    @Test
+    public void poll_customComparator_returnsCorrectOrdering() {
+        Comparator<Integer> customComparator = (x, y) -> y - x;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(customComparator);
+        pq.offer(3);
+        pq.offer(1);
+        pq.offer(2);
+        assertEquals(Integer.valueOf(3), pq.poll());
+        pq.offer(0);
+        pq.offer(4);
+        assertEquals(Integer.valueOf(4), pq.poll());
     }
 
 }

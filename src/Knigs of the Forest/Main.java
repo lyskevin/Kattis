@@ -20,7 +20,7 @@ public class Main {
         Comparator<Moose> yearComparator = (moose1, moose2) -> moose1.year - moose2.year;
         Comparator<Moose> strengthComparator = (moose1, moose2) -> moose2.strength - moose1.strength;
         Arrays.sort(pool, yearComparator);
-        PriorityQueue<Moose> pq = new PriorityQueue(strengthComparator);
+        PriorityQueue<Moose> pq = new PriorityQueue<>(strengthComparator);
         int index = 0;
         int year = 2011;
         boolean won = false;
