@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -16,6 +17,7 @@ public class PriorityQueue<E> {
     private static final int ROOT_POSITION = 0;
 
     private ArrayList<E> binaryHeap;
+    private HashMap<E, HashSet<Integer>> elementMappings;
     private Optional<Comparator<? super E>> comparator;
     private int size;
 
@@ -24,6 +26,7 @@ public class PriorityQueue<E> {
      */
     public PriorityQueue() {
         binaryHeap = new ArrayList<>();
+        elementMappings = new HashMap<>();
         comparator = Optional.empty();
         size = 0;
     }
@@ -35,6 +38,7 @@ public class PriorityQueue<E> {
      */
     public PriorityQueue(Comparator<? super E> comparator) {
         binaryHeap = new ArrayList<>();
+        elementMappings = new HashMap<>();
         this.comparator = Optional.of(comparator);
         size = 0;
     }
@@ -68,6 +72,10 @@ public class PriorityQueue<E> {
             } else {
                 binaryHeap.set(size - 1, e);
             }
+            if (!elementMappings.containsKey(e)) {
+                elementMappings.put(e, new HashSet<>());
+            }
+            elementMappings.get(e).add(size - 1);
             shiftUp(size - 1);
             return true;
         }
@@ -92,6 +100,11 @@ public class PriorityQueue<E> {
             return null;
         } else {
             E element = binaryHeap.get(0);
+            elementMappings.get(element).remove(0);
+            if (size > 1) {
+                elementMappings.get(binaryHeap.get(size - 1)).remove(size - 1);
+            }
+            elementMappings.get(binaryHeap.get(size - 1)).add(0);
             binaryHeap.set(0, binaryHeap.get(size - 1));
             size--;
             shiftDown(0);
@@ -105,6 +118,32 @@ public class PriorityQueue<E> {
      */
     public int size() {
         return size;
+    }
+
+    /**
+     * Updates the specified old element to the specified new element.
+     * @param oldElement The specified old element.
+     * @param newElement The specified new element.
+     * @throws NoSuchElementException If the specified old element does not exist in this priority queue.
+     */
+    public void updateKey(E oldElement, E newElement) throws NoSuchElementException {
+        if (!elementMappings.containsKey(oldElement)) {
+            throw new NoSuchElementException();
+        }
+        HashSet<Integer> oldElementMappings = elementMappings.get(oldElement);
+        Integer index = 0;
+        for (Integer i : oldElementMappings) {
+            index = i;
+            break;
+        }
+        oldElementMappings.remove(index);
+        binaryHeap.set(index, newElement);
+        if (!elementMappings.containsKey(newElement)) {
+            elementMappings.put(newElement, new HashSet<>());
+        }
+        elementMappings.get(newElement).add(index);
+        shiftUp(index);
+        shiftDown(index);
     }
 
     /****************************** Private helper methods ******************************/
@@ -132,6 +171,8 @@ public class PriorityQueue<E> {
     private void shiftUp(int position) {
         while (position > ROOT_POSITION
                 && compare(binaryHeap.get(parent(position)), binaryHeap.get(position)) > 0) {
+            swapElementIndices(binaryHeap.get(position), binaryHeap.get(parent(position)),
+                    position, parent(position));
             swap(position, parent(position));
             position = parent(position);
         }
@@ -149,6 +190,8 @@ public class PriorityQueue<E> {
                 elementPosition = right(position);
             }
             if (elementPosition != position) {
+                swapElementIndices(binaryHeap.get(position), binaryHeap.get(elementPosition),
+                        position, elementPosition);
                 swap(position, elementPosition);
                 position = elementPosition;
             } else {
@@ -161,6 +204,15 @@ public class PriorityQueue<E> {
         E temp = binaryHeap.get(position1);
         binaryHeap.set(position1, binaryHeap.get(position2));
         binaryHeap.set(position2, temp);
+    }
+
+    private void swapElementIndices(E element1, E element2, int index1, int index2) {
+        HashSet<Integer> element1Indices = elementMappings.get(element1);
+        element1Indices.remove(index1);
+        element1Indices.add(index2);
+        HashSet<Integer> element2Indices = elementMappings.get(element2);
+        element2Indices.remove(index2);
+        element1Indices.add(index1);
     }
 
 }

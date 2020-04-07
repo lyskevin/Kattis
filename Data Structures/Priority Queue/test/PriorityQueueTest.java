@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -95,6 +96,25 @@ public class PriorityQueueTest {
         pq.offer(0);
         pq.offer(4);
         assertEquals(Integer.valueOf(4), pq.poll());
+    }
+
+    @Test
+    public void updateKey_sequenceOfUpdates_returnsCorrectOrdering() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.offer(3);
+        pq.offer(1);
+        pq.offer(2);
+        pq.updateKey(1, 0);
+        assertEquals(Integer.valueOf(0), pq.poll());
+        pq.updateKey(2, -1);
+        assertEquals(Integer.valueOf(-1), pq.poll());
+    }
+
+    @Test
+    public void updateKey_invalidOldElement_throwsNoSuchElementException() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.offer(3);
+        assertThrows(NoSuchElementException.class, () -> pq.updateKey(1, 0));
     }
 
 }
