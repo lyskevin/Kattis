@@ -1,6 +1,7 @@
 /**
  * @author lyskevin
  * Mutable priority queue class which supports the update key operation.
+ * The priority queue is implemented using a binary heap.
  */
 class PriorityQueue<E> {
 
