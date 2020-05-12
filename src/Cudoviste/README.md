@@ -1,6 +1,6 @@
 # Link
 
-https://open.kattis.com/problems/cudoviste
+https://open.kattis.com/problems/set
 
 ## Personal Thoughts
 
