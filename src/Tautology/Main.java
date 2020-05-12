@@ -15,7 +15,7 @@ public class Main {
         while (!input.equals("0")) {
             memoTable = new int[101][101];
             boolean isTautology = true;
-            // Try all 2^5 variable values
+            // Try all 2^5 variable values with pruning (i.e. once any expression evaluates to false)
             for (int i = 0; i < 2 && isTautology; i++) {
                 values[0] = i;
                 for (int j = 0; j < 2 && isTautology; j++) {
@@ -49,11 +49,12 @@ public class Main {
             return values[s.charAt(start) - 'p'];
         } else if (s.charAt(start) == 'N') { // Logical not
             return 1 ^ evaluate(s, start + 1, end);
-        } else {
+        } else { // Binary relation
             int index = start + 2;
-            while (!isWFF(s, start + 1, index)) {
+            while (!isWFF(s, start + 1, index)) { // Find the first WFF in the binary relation
                 index++;
             }
+            // Apply binary relation to both WFFs
             if (s.charAt(start) == 'A') { // Logical or
                 return or(evaluate(s, start + 1, index), evaluate(s, index, end));
             } else if (s.charAt(start) == 'C') { // Logical implication
@@ -67,24 +68,25 @@ public class Main {
     }
 
     // Returns true if the specified string with given start and end indices is a WFF
-    // Memoizes the result in a table
+    // Memoizes the result in a table (0: not memoized, 1: not isWFF, 2: isWFF)
     private static boolean isWFF(String s, int start, int end) {
-        if (memoTable[start][end] > 0) {
+        if (memoTable[start][end] > 0) { // Result already memoized in table
             return memoTable[start][end] == 1 ? false : true;
         }
-        if (s.length() == 0) {
+        if (s.length() == 0) { // End of expression reached
             memoTable[start][end] = 1;
             return false;
         }
-        if (s.charAt(start) >= 'p' && s.charAt(start) <= 't') {
+        if (s.charAt(start) >= 'p' && s.charAt(start) <= 't') { // Variable found
             memoTable[start][end] = 2;
             return true;
         }
-        if (s.charAt(start) == 'N') {
+        if (s.charAt(start) == 'N') { // Logical not; recursively check sub-expression
             boolean result = isWFF(s, start + 1, end);
             memoTable[start][end] = result ? 2 : 1;
             return result;
         }
+        // Binary relation; recursively check sub-expression
         int index = start + 2;
         while (index < end && !isWFF(s, start + 1, index)) {
             index++;
@@ -93,10 +95,11 @@ public class Main {
         if (index < end) {
             result = isWFF(s, index, end);
         }
-        memoTable[start][end] = result ? 2 : 1;
+        memoTable[start][end] = result ? 2 : 1; // Memoize result
         return result;
     }
 
+    // Helper methods using bitwise operations
     private static int and(int p, int q) {
         return p & q;
     }
