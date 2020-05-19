@@ -9,30 +9,43 @@ public class Main {
     private static TreeSet<Integer> possibleNumbers = new TreeSet<>();
 
     public static void main(String[] args) {
-        // Use numbers in from [0, 9] as the starting digit
-        for (int i = 0; i < 10; i++) {
-            generateAllPossibleNumbers(0, i);
-        }
+        generateAllPossibleNumbers(0, 1);
         FastIO fio = new FastIO();
         int t = fio.nextInt();
         for (int i = 0; i < t; i++) {
             int number = fio.nextInt();
-            fio.println(number + Math.min(number - possibleNumbers.floor(number),
-                        possibleNumbers.ceiling(number) - number));
+            if (number - possibleNumbers.floor(number) < possibleNumbers.ceiling(number) - number) {
+                fio.println(possibleNumbers.floor(number));
+            } else {
+                fio.println(possibleNumbers.ceiling(number));
+            }
         }
         fio.close();
     }
 
     private static void generateAllPossibleNumbers(int number, int digit) {
-        if (digit < 10) {
+        if (number < 1000 && digit < 10) {
             possibleNumbers.add(number);
-            if (digit % 3 == 0) { // 9 and 0 are terminal states
-                if (digit == 3 || digit == 6) { // Can only move down
-                    generateAllPossibleNumbers(number * 10 + digit, digit + 1);
-                }
+            if (digit == 1 || digit == 2 || digit == 4 || digit == 5) {
+                generateAllPossibleNumbers(number * 10 + digit, digit + 1); // Move right; use current digit
+                generateAllPossibleNumbers(number, digit + 1); // Move right; skip current digit
+                generateAllPossibleNumbers(number * 10 + digit, digit + 3); // Move down
+                generateAllPossibleNumbers(number, digit + 3); // Move down; skip current digit
+            } else if (digit == 7) {
+                generateAllPossibleNumbers(number * 10 + digit, digit + 1); // Move right
+                generateAllPossibleNumbers(number, digit + 1); // Move right; skip current digit
+            } else if (digit == 8) {
+                generateAllPossibleNumbers(number * 10 + digit, digit + 1); // Move right; use current digit
+                generateAllPossibleNumbers(number, digit + 1); // Move right; skip current digit
+                generateAllPossibleNumbers(number * 10 + digit, 0); // Move down
+                generateAllPossibleNumbers(number, 0); // Move down; skip current digit
+            } else if (digit == 3 || digit == 6) {
+                generateAllPossibleNumbers(number * 10 + digit, digit + 3); // Move down
+                generateAllPossibleNumbers(number, digit + 3); // Move down; skip current digit
+            } else if (digit == 0 && number == 0) {
+                return;
             }
-            generateAllPossibleNumbers(number * 10 + digit, digit + 1); // Move right
-            generateAllPossibleNumbers(number * 10 + digit, digit + 3); // MOve down
+            generateAllPossibleNumbers(number * 10 + digit, digit); // Reuse current digit
         }
     }
 
