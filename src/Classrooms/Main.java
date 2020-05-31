@@ -15,9 +15,10 @@ public class Main {
         }
         Arrays.sort(intervals);
         TreeMap<Integer, Integer> classrooms = new TreeMap<>();
-        classrooms.put(0, k);
+        classrooms.put(0, k); // Initialise some dummy values for convenience
         int count = 0;
         for (int i = 0; i < n; i++) {
+            // Get the classroom with the nearest end time to this current activity start time
             Integer closestEndTime = classrooms.lowerKey(intervals[i].start);
             if (closestEndTime != null) {
                 Integer endTimeFrequency = classrooms.get(closestEndTime);
@@ -51,6 +52,7 @@ class Interval implements Comparable<Interval> {
 
     @Override
         public int compareTo(Interval other) {
+            // Sort by increasing end time, then by increasing start time if ties arise
             return this.end == other.end ? this.start - other.start : this.end - other.end;
         }
 
