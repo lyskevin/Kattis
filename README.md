@@ -1,8 +1,6 @@
 # Kattis
 
-Kattis solution code.
-
-Kattis website: https://open.kattis.com/
+Website: https://open.kattis.com/
 
 ## References
 
