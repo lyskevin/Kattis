@@ -7,5 +7,5 @@ Problem that I attempted during the summer holidays of 2020. Can be solved by us
 
 Example for 2 digit numbers: u(2) = <b>8 * u(n - 1)</b> <i>(for 11 to 18, 21 to 28, ..., 81 to 88)</i> + <b>u(n - 1)</b> <i>(for 10, 20, ..., 80; we add this term because 0 is not counted inside u(1))</i> = <b>9 * u(1)</b>
 
-General formula =  = 9<sup>n - 1</sup> * u(1) = 9<sup>n - 1</sup> * 8
+General formula = 9<sup>n - 1</sup> * u(1) = 9<sup>n - 1</sup> * 8
 
