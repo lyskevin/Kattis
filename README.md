@@ -2,8 +2,6 @@
 
 Website: https://open.kattis.com/
 
-Private repository for the time being to prevent plagiarism.
-
 ## References
 
 Competitive Programming 3.18b by Prof Steven Halim.
