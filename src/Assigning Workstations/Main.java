@@ -1,103 +1,78 @@
-import java.io.BufferedReader; 
-import java.io.IOException; 
-import java.io.InputStreamReader; 
-import java.util.StringTokenizer;
-import java.util.PriorityQueue;
-import java.util.Comparator;
+import java.io.*;
+import java.util.*;
 
 /**
  * @author lyskevin
  */
 public class Main {
     public static void main(String[] args) {
-        FastReader fr = new FastReader();
-        int numberOfResearchers = fr.nextInt();
-        int unlockTime = fr.nextInt();
-        Comparator<Researcher> researcherComparator = new Comparator<>() {
-            @Override
-            public int compare(Researcher researcher1, Researcher researcher2) {
-                if (researcher1.arrivalTime != researcher2.arrivalTime) {
-                    return (int) (researcher1.arrivalTime - researcher2.arrivalTime);
-                } else {
-                    return (int) (researcher1.timeSpent - researcher2.timeSpent);
-                }
-            }
-        };
-        PriorityQueue<Researcher> researcherPQ =
-            new PriorityQueue<>(researcherComparator);
-        for (int i = 0; i < numberOfResearchers; i++) {
-            researcherPQ.add(new Researcher(fr.nextInt(), fr.nextInt()));
+        FastIO fio = new FastIO();
+
+        int n = fio.nextInt();
+        int m = fio.nextInt();
+        Researcher[] researchers = new Researcher[n];
+        for (int i = 0; i < n; i++) {
+            researchers[i] = new Researcher(fio.nextInt(), fio.nextInt());
         }
-        Comparator<Long> arrivalTimeComparator = new Comparator<>() {
-            @Override
-            public int compare(Long arrivalTime1, Long arrivalTime2) {
-                return arrivalTime1.compareTo(arrivalTime2);
-            }
-        };
-        PriorityQueue<Long> unlockedWorkstations =
-            new PriorityQueue<>(arrivalTimeComparator);
+        Arrays.sort(researchers);
+
+        PriorityQueue<Integer> workstations = new PriorityQueue<>();
         int numberOfUnlocks = 0;
-        while (!researcherPQ.isEmpty()) {
-            Researcher researcher = researcherPQ.poll();
-            long arrivalTime = researcher.arrivalTime;
-            long timeSpent = researcher.timeSpent;
-            if (unlockedWorkstations.isEmpty()) {     
-                numberOfUnlocks++;
-            } else if (unlockedWorkstations.peek() > arrivalTime) {
-                numberOfUnlocks++;
-            } else if (unlockedWorkstations.peek() <= arrivalTime
-                       && unlockedWorkstations.peek() + unlockTime >= arrivalTime) {
-                unlockedWorkstations.poll();
-            } else if (unlockedWorkstations.peek() + unlockTime < arrivalTime) {
-                while (!unlockedWorkstations.isEmpty()) {
-                    long nextAvailableTime = unlockedWorkstations.peek();
-                    if (nextAvailableTime + unlockTime < arrivalTime) {
-                        unlockedWorkstations.poll();
-                        continue;
-                    } else if (nextAvailableTime <= arrivalTime
-                               && nextAvailableTime + unlockTime >= arrivalTime) {
-                        unlockedWorkstations.poll();
-                        break;
-                    } else if (nextAvailableTime > arrivalTime) {
-                        numberOfUnlocks++;
-                        break;
+        for (int i = 0; i < n; i++) {
+            boolean isFound = false;
+            Researcher researcher = researchers[i];            
+
+            while (!isFound && !workstations.isEmpty()) {
+                if (workstations.peek() > researcher.a) {
+                    break;
+                } else {
+                    int workstation = workstations.poll();
+                    if (workstation <= researcher.a && workstation + m >= researcher.a) {
+                        isFound = true;
                     }
                 }
-                if (unlockedWorkstations.isEmpty()) {
-                    numberOfUnlocks++;
-                }
             }
-            unlockedWorkstations.offer(arrivalTime + timeSpent);
+
+            if (!isFound) {
+                numberOfUnlocks++;
+            }
+            workstations.offer(researcher.a + researcher.s);
         }
-        System.out.println(numberOfResearchers - numberOfUnlocks);
+
+        fio.println(n - numberOfUnlocks);
+        fio.close();
     }
 }
 
-class Researcher {
-    
-    long arrivalTime;
-    long timeSpent;
+class Researcher implements Comparable<Researcher> {
+    int a;
+    int s;
 
-    Researcher(long arrivalTime, long timeSpent) {
-        this.arrivalTime = arrivalTime;
-        this.timeSpent = timeSpent;
+    Researcher(int a, int s) {
+        this.a = a;
+        this.s = s;
     }
 
+    @Override
+    public int compareTo(Researcher other) {
+        return this.a - other.a;
+    }
 }
 
 /**
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
  */
-class FastReader 
+class FastIO extends PrintWriter 
 { 
     BufferedReader br; 
-    StringTokenizer st; 
+    StringTokenizer st;
 
-    public FastReader() 
+    public FastIO() 
     { 
+        super(new BufferedOutputStream(System.out)); 
         br = new BufferedReader(new
-                InputStreamReader(System.in)); 
+                InputStreamReader(System.in));
     } 
 
     String next() 
