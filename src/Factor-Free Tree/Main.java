@@ -6,10 +6,13 @@ import java.util.*;
  */
 public class Main {
     private static ArrayList<Integer> primes = new ArrayList<>();
-    private static HashMap<Integer, Integer> numberToIndexMap = new HashMap<>(); // Number -> Index in array
-    private static ArrayList<ArrayList<Integer>> factorisedNumbers = new ArrayList<>(); // Index -> List of prime factors of array[index]
-    private static HashMap<Integer, TreeSet<Integer>> primeFactorToIndicesMap = new HashMap<>(); // Prime factor -> Ordered set of indices containing it
-    private static int[] result;
+    private static int[] numberToIndexMap = new int[10000001]; // Number -> Index in array
+    private static int[][] factorisedNumbers = new int[1000000][30]; // Index -> Prime factors of array[index]
+    private static int[] left = new int[1000001]; // Minimum bounds for each prime factor
+    private static int[] right = new int[1000001]; // Maximum bounds for each prime factor
+    private static int[] result; // Answer to print
+    private static int MAX = 1000000000;
+    private static int MIN = -1;
 
     public static void main(String[] args) {
 
@@ -24,6 +27,11 @@ public class Main {
         FastIO fio = new FastIO();
 
         int n = fio.nextInt();
+        for (int i = 0; i < 1000001; i++) {
+            left[i] = MIN;
+            right[i] = MAX;
+        }
+
         for (int i = 0; i < n; i++) {
             factorise(fio.nextInt(), i);
         }
@@ -62,28 +70,24 @@ public class Main {
     }
 
     private static void factorise(int number, int index) {
-        ArrayList<Integer> primeFactors = new ArrayList<>();
-        factorisedNumbers.add(primeFactors);
 
         // Already factorised this number before
-        if (numberToIndexMap.containsKey(number)) {
-            factorisedNumbers.set(index, factorisedNumbers.get(numberToIndexMap.get(number)));
+        if (numberToIndexMap[number] > 0) {
+            factorisedNumbers[index] = factorisedNumbers[numberToIndexMap[number]];
             return;
         }
 
         // Standard prime factorisation algorithm
-        numberToIndexMap.put(number, index);
+        //numberToIndexMap.put(number, index);
         int primesIndex = 0;
+        int currentIndex = 0;
         int primeFactor = primes.get(primesIndex);
         while (primeFactor * primeFactor <= number) {
             if (number % primeFactor == 0) {
-                primeFactors.add(primeFactor);
-
-                if (!primeFactorToIndicesMap.containsKey(primeFactor)) {
-                    primeFactorToIndicesMap.put(primeFactor, new TreeSet<>());
-                }
-
-                primeFactorToIndicesMap.get(primeFactor).add(index);
+                factorisedNumbers[index][currentIndex] = primeFactor;
+                currentIndex++;
+                left[primeFactor] = Math.max(index, left[primeFactor]);
+                right[primeFactor] = Math.min(index, right[primeFactor]);
             }
             while (number % primeFactor == 0) {
                 number /= primeFactor;
@@ -94,21 +98,22 @@ public class Main {
             }
             primeFactor = primes.get(primesIndex);
         }
-        
+
         if (number > 1) {
-            primeFactors.add(number);
-
-            if (!primeFactorToIndicesMap.containsKey(number)) {
-                primeFactorToIndicesMap.put(number, new TreeSet<>());
-            }
-
-            primeFactorToIndicesMap.get(number).add(index);
+            factorisedNumbers[index][currentIndex] = number;
+            currentIndex++;
+            primeFactor = number;
+            left[primeFactor] = Math.max(index, left[primeFactor]);
+            right[primeFactor] = Math.min(index, right[primeFactor]);
         }
     }
 
     private static boolean generateTree(int start, int end, int parent) {
-        if (start == end) {
-            result[start] = parent;
+        if (start >= end) {
+            if (start == end) {
+                result[start] = parent;
+            }
+            return true;
         }
 
         int low = start;
@@ -137,12 +142,10 @@ public class Main {
     }
 
     private static boolean isCoPrime(int index, int start, int end) {
-        ArrayList<Integer> primeFactors = factorisedNumbers.get(index);
-        for (Integer primeFactor : primeFactors) {
-            TreeSet<Integer> indices = primeFactorToIndicesMap.get(primeFactor);
-            Integer lowerBound = indices.floor(index);
-            Integer upperBound = indices.ceiling(index);
-            if (lowerBound != null && lowerBound >= start && upperBound != null && upperBound <= end) {
+        int[] primeFactors = factorisedNumbers[index];
+        for (int i = 0; i < 30 && primeFactors[i] > 0; i++) {
+            int primeFactor = primeFactors[i];
+            if (left[primeFactor] > start || right[primeFactor] < end) {
                 return false;
             }
         }
@@ -154,61 +157,60 @@ public class Main {
  * Fast I/O
  * @source https://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/
  */
-class FastIO extends PrintWriter 
-{ 
-    BufferedReader br; 
+class FastIO extends PrintWriter
+{
+    BufferedReader br;
     StringTokenizer st;
 
-    public FastIO() 
-    { 
-        super(new BufferedOutputStream(System.out)); 
+    public FastIO()
+    {
+        super(new BufferedOutputStream(System.out));
         br = new BufferedReader(new
                 InputStreamReader(System.in));
-    } 
+    }
 
-    String next() 
-    { 
-        while (st == null || !st.hasMoreElements()) 
-        { 
+    String next()
+    {
+        while (st == null || !st.hasMoreElements())
+        {
             try
-            { 
-                st = new StringTokenizer(br.readLine()); 
-            } 
-            catch (IOException  e) 
-            { 
-                e.printStackTrace(); 
-            } 
-        } 
-        return st.nextToken(); 
-    } 
+            {
+                st = new StringTokenizer(br.readLine());
+            }
+            catch (IOException  e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return st.nextToken();
+    }
 
-    int nextInt() 
-    { 
-        return Integer.parseInt(next()); 
-    } 
+    int nextInt()
+    {
+        return Integer.parseInt(next());
+    }
 
-    long nextLong() 
-    { 
-        return Long.parseLong(next()); 
-    } 
+    long nextLong()
+    {
+        return Long.parseLong(next());
+    }
 
-    double nextDouble() 
-    { 
-        return Double.parseDouble(next()); 
-    } 
+    double nextDouble()
+    {
+        return Double.parseDouble(next());
+    }
 
-    String nextLine() 
-    { 
-        String str = ""; 
+    String nextLine()
+    {
+        String str = "";
         try
-        { 
-            str = br.readLine(); 
-        } 
-        catch (IOException e) 
-        { 
-            e.printStackTrace(); 
-        } 
-        return str; 
-    } 
+        {
+            str = br.readLine();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return str;
+    }
 }
-
