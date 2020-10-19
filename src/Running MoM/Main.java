@@ -33,7 +33,6 @@ public class Main {
                 count++;
             }
             adjList.get(map.get(city1)).add(map.get(city2));
-            adjList.get(map.get(city2)).add(map.get(city1));
         }
 
         isVisited = new boolean[count];
@@ -66,7 +65,7 @@ public class Main {
         boolean result = false;
         for (int next : adjList.get(node)) {
             if (!isVisited[next]) {
-                result = result || dfs(next);
+                result = dfs(next) || result;
             } else {
                 result = result || hasCycle[next] || predecessors.contains(next);
             }
