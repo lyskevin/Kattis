@@ -24,6 +24,17 @@ public class Main {
         int count = 0;
         for (int i = 0; i < M; i++) {
             boolean hasColumnColour = false;
+
+            // First check whether this column has already been assigned a colour
+            // I.e. This column contains >= 1 student from a class which already has a colour
+            for (int j = 0; j < N; j++) {
+                char c = grid[j][i];
+                if (used[c - 'A']) {
+                    hasColumnColour = true;
+                }
+            }
+
+            // Assign this column a colour if it does not already have one
             for (int j = 0; j < N; j++) {
                 char c = grid[j][i];
                 if (!used[c - 'A']) {
